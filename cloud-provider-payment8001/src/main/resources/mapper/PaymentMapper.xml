@@ -8,7 +8,7 @@
     </select>
 
     <insert id="create" parameterType="Payment" >
-        insert into payment values (#{id},#{serial})
+        insert into payment values ((select t.id from (select IFNULL(max(id) + 1,1) as id from payment) t ), #{serial});
     </insert>
 
 </mapper>
