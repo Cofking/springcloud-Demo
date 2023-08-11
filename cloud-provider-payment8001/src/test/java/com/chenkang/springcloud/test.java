@@ -3,6 +3,7 @@ package com.chenkang.springcloud;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import com.chenkang.springcloud.Controller.Singleton;
 import com.chenkang.springcloud.mapper.PaymentDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.concurrent.*;
 
@@ -113,7 +116,7 @@ public class test {
     @DisplayName("4种常用线程池")
     @Test
     void test4() {
-        //固定线程大小线程池
+        //固定线程大小线程池 队列无限  内存容易被挤爆
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         //可缓存无线程大小上限线程池
         ExecutorService executorService1 = Executors.newCachedThreadPool();
@@ -166,9 +169,9 @@ public class test {
                     BufferedInputStream in = FileUtil.getInputStream(file_target_path + File.separator + name);
                     BufferedOutputStream out = FileUtil.getOutputStream(file_save_path + File.separator + name);
                     long copySize = IoUtil.copy(in, out, IoUtil.DEFAULT_BUFFER_SIZE);
-                    System.out.println("复制文件成功，文件大小:" + copySize+" 文件名:"+name);
-                    if(name.equals("test - 副本 (2).mp4")){
-                        int a=1/0;
+                    System.out.println("复制文件成功，文件大小:" + copySize + " 文件名:" + name);
+                    if (name.equals("test - 副本 (2).mp4")) {
+                        int a = 1 / 0;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -191,7 +194,18 @@ public class test {
 //                break;
 //            }
 //        }
+        //方法三 使用CountDownLatch计数器，在每个子线程中调用countDown()使计数器减一，使用await()阻塞主线程直到计数器为0 或者使用await(long timeout, TimeUnit unit)设置超时时间
         System.out.println("所有子线程都完成任务了！！");
+    }
+
+
+    @DisplayName("测试静态内部类懒汉式单例模式")
+    @Test
+    void test7(){
+        Singleton instance1 = Singleton.getInstance();
+        Singleton instance2 = Singleton.getInstance();
+        System.out.println(instance1);
+        System.out.println(instance2);
     }
 
 
