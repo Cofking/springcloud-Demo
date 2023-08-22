@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 消息实体类
+ * 支付表实体类
  *
  * @author ChenKang
  * @date 2023-5-11 14:12:36
