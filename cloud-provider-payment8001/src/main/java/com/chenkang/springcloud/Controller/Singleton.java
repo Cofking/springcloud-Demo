@@ -7,6 +7,7 @@ package com.chenkang.springcloud.Controller;
  * @date 2023/8/7 10:35
  */
 public class Singleton {
+    //通过类加载机制保证多线程安全
     private static class SingletonHolder {
         private static final Singleton INSTANCE = new Singleton();
     }
