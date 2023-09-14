@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author ChenKang
@@ -45,6 +47,16 @@ public class PaymentController {
         } else {
             return new CommonResult<Payment>(messageCode.Fail.getCode(), "查询数据失败,id:" + id);
         }
+    }
+
+    @GetMapping(value = "/feign/timeout")
+    public String FeignTimeout(){
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
     }
 
 }
