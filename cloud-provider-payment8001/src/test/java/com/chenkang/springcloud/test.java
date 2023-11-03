@@ -5,17 +5,20 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import com.chenkang.springcloud.Controller.Singleton;
 import com.chenkang.springcloud.mapper.PaymentDao;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.*;
 
 
@@ -206,6 +209,38 @@ public class test {
         Singleton instance2 = Singleton.getInstance();
         System.out.println(instance1);
         System.out.println(instance2);
+    }
+
+    @DisplayName("条形码识别")
+    @Test
+    void test8() {
+        while (true) {
+            readCode(new File("C:\\Work\\Temp\\Photo\\0201_20231101151426574.jpg"));
+        }
+    }
+
+    /**
+     * @param readImage 读取一维码图片名
+     * @return void
+     */
+    public static void readCode(File readImage) {
+        try {
+            BufferedImage read = ImageIO.read(readImage);
+            if (null == read) {
+                return;
+            }
+            BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(read);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+            Map<DecodeHintType, Object> hints = new HashMap<>();
+            hints.put(DecodeHintType.CHARACTER_SET, "GBK");
+            hints.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
+            hints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
+
+            Result decode = new MultiFormatReader().decode(bitmap, hints);
+            System.out.println("条形码的内容是：" + decode.getText());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
