@@ -70,6 +70,12 @@ public class PaymentController {
         return this.discoveryClient;
     }
 
+    @GetMapping(value = "/payment/port")
+    public String getServerPort() {
+        return serverPort;
+    }
+
+
     @GetMapping(value = "/feign/timeout")
     public String FeignTimeout()  {
         try {
