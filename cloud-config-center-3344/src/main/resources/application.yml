@@ -8,10 +8,10 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/Cofking/springcloud-Demo.git #GitHub上面的git仓库名字
-          ####搜索目录
+          uri: https://gitee.com/cccckkkk98/springcloud-demo.git #Gitee上面的git仓库名字
+          ####搜索目录  在项目中搜索配置文件夹
           search-paths:
-            - springcloud-Demo/config
+            - config
 #          username: Cofking
       ####读取分支
       label: master
