@@ -1,0 +1,35 @@
+server:
+  port: 8401
+
+
+spring:
+  application:
+    name: cloudalibaba-sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 #配置Nacos地址
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:10001 # Sentinel dashboard 地址
+        port: 8719 #  默认8719 如果被占用自动 +1 直到有可用端口
+      datasource:
+        flow-ds: # 动态数据源自定义名称 Sentinel 启动会去读取加载的配置  如果修改了 dashboard源码，还可以通过dashboard上添加规则持久化到Nacos中
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}  # Sentinel在Nacos中不需要后缀
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow   # 流控方式  flow 流控  意思是  dataId 中配的规则都是 流控规则  其他规则无效
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+feign:
+  sentinel:
+    enabled: true # 激活Sentinel对Feign的支持
