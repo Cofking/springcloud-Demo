@@ -1,0 +1,49 @@
+server:
+  port: 2001
+
+spring:
+  application:
+    name: seata-order-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seata_order?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 #配置Nacos地址
+
+# 客户端 与TC 服务端 使用 nacos 连接
+seata:
+  # 修改 seata 事务模式 为 AT (默认事务模式)
+  data-source-proxy-mode: AT
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      application: seata-server
+      group: SEATA_GROUP
+      namespace:
+      cluster: default
+      username: "nacos"
+      password: "nacos"
+  tx-service-group: seata-demo # 事务组名称
+#  service:
+#    vgroup-mapping: # 事务组与cluster的映射关系 应该把集群配置到意思
+#      seata-demo: default #关联的集群名    这里是上面自定义的事务组名称
+
+  config:  #配置使用nacos进行管理  ， 这里是 将 事务组 与  cluster 集群管理  将 事务组和cluster的映射 在nacos上配置
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      username: nacos
+      password: nacos
+      data-id: client.yaml
+
+  security:
+    secretKey: SeataSecretKey0c382ef121d778043159209298fd40bf3850a017
+    tokenValidityInMilliseconds: 1800000
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.jpeg,/**/*.ico,/api/v1/auth/login
